@@ -19,7 +19,7 @@
             		
             		  //html的模板参数是temple,内容用%s来替换
             		  //举个栗子：<input id="aaa" type="hidden" value="<span>%s</span><p>%s</p>"> （放在页面的隐藏控件）
-            			temp=temp.replace(/%s/,(data[j][x]||"-"));     
+            			temp=temp.replace(/%s/,(data[j][x]||"0"));     
             		}
             		html+=temp;
             	}	 
