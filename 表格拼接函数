@@ -1,0 +1,27 @@
+            /*
+ 			* @author:kelichao
+ 			* @表格拼接异步请求
+ 			* @用于简化ajax表格拼接带来的痛苦
+ 			* @update:20160331
+ 			* 数据格式 [{"a":1,"b":2},{"a":3,"b":4}]
+ 			*/
+			function splicHtml(data,temple){
+            	var html = "";
+            	var temple = temple||{}; 
+            	var data = data||{};
+
+            	//外层循环
+            	for(var j=0;j<data.length;j++){
+            		var temp=temple;
+
+            		//内层循环
+            		for(var x in data[j]){
+            		
+            		  //html的模板参数是temple,内容用%s来替换
+            		  //举个栗子：<input id="aaa" type="hidden" value="<span>%s</span><p>%s</p>"> （放在页面的隐藏控件）
+            			temp=temp.replace(/%s/,data[j][x]);   
+            		}
+            		html+=temp;
+            	}	 
+            	return html   
+			}
