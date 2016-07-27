@@ -1,0 +1,30 @@
+    var value = "?do=art&sdfg=123";
+
+    function address(value) {
+        
+        var str =value,
+            arr = [],
+            obj = {},
+            first,
+            final;
+        
+        if (typeof str == 'string' && str.length != 0) {
+
+            str = str.substring(1);
+            arr = str.split("&");
+
+            for(var i=0; i<arr.length; i++) {
+                first = arr[i].split("=")[0];
+                final = arr[i].split("=")[1];
+                obj[first] = final;
+            }
+        }
+
+        return obj
+
+    }
+
+
+    x = address(value)
+
+    console.log(address(value))
