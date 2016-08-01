@@ -1,0 +1,27 @@
+	$("#drag")[0].ondrop = function(e) {
+
+		e.preventDefault();
+
+		//设置内容属性，暂时还没什么用。
+		// e.dataTransfer.setData("text/plain", "sss")
+
+		var file = e.dataTransfer.files[0]
+
+		// file为前面获得的图片文件
+
+		var reader = new FileReader();
+
+		reader.onload = function(e) {
+		  var img = new Image;
+		  img.src = this.result;  // this.result 为base64
+		  // 加到dom
+		};
+
+		reader.readAsDataURL(file);
+		// file为前面获得的
+		var url = window.URL.createObjectURL(file);
+		var img = new Image;
+		img.src = url;
+		// 加到dom
+		$("body").append(img);
+	}
