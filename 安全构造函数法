@@ -1,0 +1,13 @@
+	//安全法构造函数  ，防止new漏写
+	function A(name) {
+
+		if (this instanceof A) {
+			this.name = name;
+		} else {
+			return new A(name);
+		}
+
+	}
+
+	var a = A("熊大");
+	var b = new A("熊二")
