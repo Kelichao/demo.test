@@ -1,3 +1,5 @@
+        // 新兴API用于访问计算机文件，高级编程书第25章。
+
 	$("#drag")[0].ondrop = function(e) {
 
 		e.preventDefault();
