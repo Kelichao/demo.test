@@ -73,6 +73,25 @@
 			// 计算当前位置
 			var x = e.pageX - mouseOffsetX;
 			var y = e.pageY - mouseOffsetY;
+
+			// 范围限定
+			var clientWidth = document.body.clientWidth;
+			var clientHeight = document.body.clientHeight;
+			var contWidth = g(".cont").offsetWidth;
+			var contHeight = g(".cont").offsetHeight;
+			if (x < 0) {
+				x = 0;
+			} else if (x + contWidth > clientWidth) {
+				x = clientWidth - contWidth;
+			}
+
+			if(y < 0 ) {
+				y = 0;
+			} else if (y +contHeight > clientHeight) {
+				y = clientHeight - contHeight;
+			}
+
+
 			g(".cont").style.left =  x + "px";
 			g(".cont").style.top =y + "px";
 		}
