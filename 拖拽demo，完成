@@ -79,17 +79,17 @@
 			var clientHeight = document.body.clientHeight;
 			var contWidth = g(".cont").offsetWidth;
 			var contHeight = g(".cont").offsetHeight;
-			if (x < 0) {
-				x = 0;
-			} else if (x + contWidth > clientWidth) {
-				x = clientWidth - contWidth;
-			}
+			var maxX = clientWidth - contWidth;
+			var maxY = clientHeight -contHeight;
+			
+			x = Math.min(maxX, Math.max(0, x));
+			y = Math.min(maxY, Math.max(0, y));
 
-			if(y < 0 ) {
-				y = 0;
-			} else if (y +contHeight > clientHeight) {
-				y = clientHeight - contHeight;
-			}
+			// if(y < 0 ) {
+			// 	y = 0;
+			// } else if (y +contHeight > clientHeight) {
+			// 	y = clientHeight - contHeight;
+			// }
 
 
 			g(".cont").style.left =  x + "px";
