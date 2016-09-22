@@ -1,0 +1,27 @@
+	// 普通对象发生改变
+
+	var a ={
+		a:{
+			c:{
+				d:1
+			}
+		}
+	};
+	var b = a.a.c;
+	a.a.c.d =231;
+	console.log(b===a.a.c);
+
+	// 函数对象没法直接改变
+
+	var a ={
+		a:{
+			c:{
+				d:function() {
+					console.log(this);
+				}
+			}
+		}
+	};
+	var b = a.a.c.d;
+	a.a.c.d =231;
+	console.log(b===a.a.c.d);
