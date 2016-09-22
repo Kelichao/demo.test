@@ -25,3 +25,27 @@
 	var b = a.a.c.d;
 	a.a.c.d =231;
 	console.log(b===a.a.c.d);
+	
+	//那道比较经典的面试题
+	var User = {
+		count: 1,
+		gotCount: function() {
+			console.log(this.count);
+		}
+	};
+	User.gotCount();
+	var func = User.gotCount;
+	func();
+	//我自己改造的深度记忆
+	var User = {
+		count: 1,
+		gotCount: function() {
+			console.log(this);
+			console.log(this.count);
+		}
+	};
+	window.User.gotCount();
+	var func = {};
+	func.aaa = User.gotCount;
+	func.count =22234;
+	window.func.aaa();
