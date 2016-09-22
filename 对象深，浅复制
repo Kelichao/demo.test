@@ -1,0 +1,93 @@
+	// 浅复制一个对象,普通迭代
+
+	var a = {
+		b:1,
+		c:2,
+		d:3
+	};
+
+	var obj1 = {};
+
+	for(var i in a){
+		obj1[i] = a[i];
+	}
+
+	console.log(obj1);
+	
+
+
+
+
+
+
+	
+	// 深复制一个对象， 傻瓜式递归
+
+	var b = {
+		a:0,
+		b:{
+			c:{
+				d:{
+					e:5
+				}
+			}
+		}
+	};
+
+	// 傻瓜式递归
+	if(b instanceof Object === true) {
+		for(var i in b) {
+			obj[i] = b[i];
+			if(b[i] instanceof Object === true) {
+				for(var j in b[i]) {
+					obj[i][j] = b[i][j];
+					if(b[i][j] instanceof Object === true) {
+						for(var m in b[i][j]) {
+							obj[i][j][m] = b[i][j][m];
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	// 深复制一个对象 ，用递归方法拷贝深层次对象
+
+	var b = {
+		a:0,
+		b:{
+			c:{
+				d:{
+					e:5
+				}
+			}
+		}
+	};
+	
+	var obj2 ={};
+	obj2 = recursive(b);
+	b.b.c.d.e = 111111;
+	console.log(obj2);
+
+	// 用递归方法拷贝深层次对象
+
+	function recursive(cont) {
+		var object={};
+		for (var i in cont) {
+
+			if (cont[i] instanceof Object !== true) {
+
+			object[i] = cont[i];
+			
+			} else {
+
+				object[i] = arguments.callee(cont[i]); // 用agruments.callee代替object[i] = recursive(cont[i]);
+			}
+		} 
+
+		return object;
+
+	}
