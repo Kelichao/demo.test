@@ -22,3 +22,8 @@
 		}
 	}
 	isObj(window);
+	
+	//优化写法
+	Object.prototype.toString.call(proObject);
+	
+	
