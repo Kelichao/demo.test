@@ -19,7 +19,15 @@
 		
 		reader.onload = function(e) {
 		  var img = new Image;
-		  img.src = this.result;  // this.result 为base64编码 
+		  
+		  // this.result 为base64编码 （由图片转换过来的）
+		  // 与formdata相区别的是，formdata转的是二进制数据
+		  
+		  img.src = this.result;  
+		  
+		  // 这个可以直接将得到的编码文件作为url作为背景
+		  //document.body.style.backgroundImage = "url(" +this.result + ")";
+		  
 		  //console.log(this.result)// 如果大小比较小，可以输出，直接做css样式的代码
 		  // 加到dom
 		};
