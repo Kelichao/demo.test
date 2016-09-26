@@ -1,4 +1,6 @@
-        // 新兴API用于访问计算机文件，高级编程书第25章。
+ <input type="file" id="drag" style="background:orange;width:100px;height:100px">
+ <script type="text/javascript">
+  // 新兴API用于访问计算机文件，高级编程书第25章。
 
 	$("#drag")[0].ondrop = function(e) {
 
@@ -27,3 +29,4 @@
 		// 加到dom
 		$("body").append(img);
 	}
+</script>
