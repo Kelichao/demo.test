@@ -1,4 +1,5 @@
-    var value = "?do=art&sdfg=123";
+ ```javascript
+   var value = "?do=art&sdfg=123";
 
     function address(value) {
         
@@ -28,3 +29,4 @@
     x = address(value)
 
     console.log(address(value))
+```
