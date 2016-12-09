@@ -1,45 +1,54 @@
- <input name="上传图片文件" type="file" id="drag" style="background:orange;width:100px;height:100px">
- <script type="text/javascript">
-  // 新兴API用于访问计算机文件，高级编程书第25章。
+<!DOCTYPE html>
+<html>
+<head>
+	<title>将图片文件拖拽上传，并进行预览，本地方式，FilerReader</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	 <input name="上传图片文件" type="file" id="drag" style="background:orange;width:100px;height:100px">
+	 <script type="text/javascript">
+	  // 新兴API用于访问计算机文件，高级编程书第25章。
 
-	$("#drag")[0].ondrop = function(e) {
+		document.querySelector("#drag").ondrop = function(e) {
 
-		e.preventDefault();
+			e.preventDefault();
 
-		// 设置内容属性，暂时还没什么用。
-		// e.dataTransfer.setData("text/plain", "sss")
+			// 设置内容属性，暂时还没什么用。
+			// e.dataTransfer.setData("text/plain", "sss")
 
-		var file = e.dataTransfer.files[0]
+			var file = e.dataTransfer.files[0]
 
-		// file为前面获得的图片文件
+			// file为前面获得的图片文件
 
-		var reader = new FileReader();
-		
-		// fileReader如果拿到文件的数据之后
-		
-		reader.onload = function(e) {
-		  var img = new Image;
-		  
-		  // this.result 为base64编码 （由图片转换过来的）
-		  // 与formdata相区别的是，formdata转的是二进制数据
-		  
-		  img.src = this.result;  
-		  
-		  // 这个可以直接将得到的编码文件作为url作为背景
-		  //document.body.style.backgroundImage = "url(" +this.result + ")";
-		  
-		  //console.log(this.result)// 如果大小比较小，可以输出，直接做css样式的代码
-		  // 加到dom
-		};
+			var reader = new FileReader();
+			
+			// fileReader如果拿到文件的数据之后
+			
+			reader.onload = function(e) {
+			  var img = new Image;
+			  
+			  // this.result 为base64编码 （由图片转换过来的）
+			  // 与formdata相区别的是，formdata转的是二进制数据
+			  
+			  img.src = this.result;  
+			  
+			  // 这个可以直接将得到的编码文件作为url作为背景
+			  //document.body.style.backgroundImage = "url(" +this.result + ")";
+			  
+			  //console.log(this.result)// 如果大小比较小，可以输出，直接做css样式的代码
+			  // 加到dom
+			};
 
-		reader.readAsDataURL(file);
-		
-		// file为前面获得的
-		var url = window.URL.createObjectURL(file);
-		var img = new Image;
-		img.src = url;
-		
-		// 加到dom,直接在页面显示。
-		$("body").append(img);
-	}
-</script>
+			reader.readAsDataURL(file);
+			
+			// file为前面获得的
+			var url = window.URL.createObjectURL(file);
+			var img = new Image;
+			img.src = url;
+			
+			// 加到dom,直接在页面显示。
+			document.body.appendChild(img);
+		}
+	</script>
+</body>
+</html>
