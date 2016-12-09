@@ -7,48 +7,58 @@
 <body>
 	 <input name="上传图片文件" type="file" id="drag" style="background:orange;width:100px;height:100px">
 	 <script type="text/javascript">
+
+	 function upDate(e) {
+
+	 			e.preventDefault();
+
+	 			// 设置内容属性，暂时还没什么用。
+	 			// e.dataTransfer.setData("text/plain", "sss")
+
+	 			var file = null;
+
+	 			if(e.type === "change") {
+	 				file = this.files[0];
+	 			} else {
+	 				file = e.dataTransfer.files[0];
+	 			}
+	 			
+
+	 			// file为前面获得的图片文件
+
+	 			var reader = new FileReader();
+	 			
+	 			// fileReader如果拿到文件的数据之后
+	 			
+	 			reader.onload = function(e) {
+	 			  var img = new Image;
+	 			  
+	 			  // this.result 为base64编码 （由图片转换过来的）
+	 			  // 与formdata相区别的是，formdata转的是二进制数据
+	 			  
+	 			  img.src = this.result;  
+	 			  
+	 			  // 这个可以直接将得到的编码文件作为url作为背景
+	 			  //document.body.style.backgroundImage = "url(" +this.result + ")";
+	 			  
+	 			  //console.log(this.result)// 如果大小比较小，可以输出，直接做css样式的代码
+	 			  // 加到dom
+	 			};
+
+	 			reader.readAsDataURL(file);
+	 			
+	 			// file为前面获得的
+	 			var url = window.URL.createObjectURL(file);
+	 			var img = new Image;
+	 			img.src = url;
+	 			
+	 			// 加到dom,直接在页面显示。
+	 			document.body.appendChild(img);
+	 		}
 	  // 新兴API用于访问计算机文件，高级编程书第25章。
 
-		document.querySelector("#drag").ondrop = function(e) {
-
-			e.preventDefault();
-
-			// 设置内容属性，暂时还没什么用。
-			// e.dataTransfer.setData("text/plain", "sss")
-
-			var file = e.dataTransfer.files[0]
-
-			// file为前面获得的图片文件
-
-			var reader = new FileReader();
-			
-			// fileReader如果拿到文件的数据之后
-			
-			reader.onload = function(e) {
-			  var img = new Image;
-			  
-			  // this.result 为base64编码 （由图片转换过来的）
-			  // 与formdata相区别的是，formdata转的是二进制数据
-			  
-			  img.src = this.result;  
-			  
-			  // 这个可以直接将得到的编码文件作为url作为背景
-			  //document.body.style.backgroundImage = "url(" +this.result + ")";
-			  
-			  //console.log(this.result)// 如果大小比较小，可以输出，直接做css样式的代码
-			  // 加到dom
-			};
-
-			reader.readAsDataURL(file);
-			
-			// file为前面获得的
-			var url = window.URL.createObjectURL(file);
-			var img = new Image;
-			img.src = url;
-			
-			// 加到dom,直接在页面显示。
-			document.body.appendChild(img);
-		}
+		document.querySelector("#drag").ondrop = upDate;
+		document.querySelector("#drag").onchange = upDate;
 	</script>
 </body>
 </html>
