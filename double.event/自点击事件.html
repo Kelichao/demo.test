@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>函数绑定</title>
+	<style type="text/css">
+		.active{
+			background:orange;
+		}
+		li {
+			text-decoration:none;
+			list-style: none;
+			display: inline-block;
+			cursor:pointer;
+		}
+		ul {
+			width:200px;
+		}
+	</style>
+</head>
+<body>
+	<ul id="tabs">
+	    <li data-tab="users">Users</li>
+	    <li data-tab="groups">Groups</li>
+	</ul>
+	<div id="tabsContent">
+	    <div data-tab="users">part1</div>
+	    <div data-tab="groups">part2</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+
+	$.fn.tabs=function(option){
+
+	    var element=$(this);
+			control=$(option.control);
+
+	    element.delegate("li","click",function(){
+	        var tabName=$(this).attr("data-tab");
+
+	         // 点击li的时候触发changeTabs自定义事件  
+
+	        element.trigger("changeTabs",tabName); 
+	    });
+	         
+	    // 给element绑定一个changeTabs自定义事件
+	    element.on("changeTabs",function(e,tabName){
+	        element.find("li").removeClass("active");
+	        element.find(">[data-tab='"+ tabName +"']").addClass("active");
+	    });     
+
+
+
+	    element.on("changeTabs",function(e,tabName){
+	        control.find(">[data-tab]").removeClass("active");
+	        control.find(">[data-tab='"+ tabName +"']").addClass("active");
+	    });
+
+	    // 激活第一个选项卡  
+	    var firstName=element.find("li:first").attr("data-tab");
+	    element.trigger("changeTabs",firstName);
+	    return this;
+	};
+ 
+	$("ul#tabs").tabs({
+		control:"#tabsContent",
+		
+	});
+</script>
