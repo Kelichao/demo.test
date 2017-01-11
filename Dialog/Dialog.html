@@ -1,106 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>可拖拽弹窗demo</title>
 	<meta charset="utf-8">
-	<title>弹窗组件</title>
 </head>
-<body>
-	<div class="div1" style="width:200px;height:300px"></div>
-	<div class="cont" style="display:none;">
-
-
-
-				<h4 class="pro-title pro-overflow" title="资金青黄不接，九月或成分水岭">资金青黄不接，九月或成分水岭</h4>
-				<span class="special-color">路演嘉宾</span><span style="float:right;font-size:13px">罗文波</span>
-				<h6 class="pro-overflow" style="margin:8px 0 8px 0;font-weight:normal;color:#fda31d;" title="新财富能源与贸易行业金牌分析师">新财富能源与贸易行业金牌分析师</h6>
-				<span class="special-color">路演时间</span><span style="font-size:13px;float:right;line-height:19px">2016.10.34  17:00</span>
-				<div style="clear:both"></div>
-				<a class="pro-dialog-a" href="javascript:;">查看详情</a>
-
-
+<body >
+	<button>显示遮罩</button>
+	<div class="mask">
+		<div class="cont">
+			<div class="title">
+			我是弹窗头
+			<div class="close">×</div>
+			</div>
+		</div>		
 	</div>
-
 </body>
 <style type="text/css">
-	*{margin:0px;padding:0px;font-family:宋体;}
-	.pro-dialog-head b {display:inline-block; width:12px; height:2px; background:#7c7c7c; font-size:0; line-height:0;vertical-align:middle;-webkit-transform: rotate(45deg);}
-	.pro-dialog-close {cursor:pointer;width: 19px;float: right;height: 100%;line-height: 29px;}
-	.pro-dialog-head b:after { content:'.'; display:block; width:12px; height:2px; background:#7c7c7c;-webkit-transform: rotate(-90deg);}
-	.pro-dialog-head {height:35px;padding:4px;}
-	.pro-dialog-title{font-size:16px;font-family:宋体;line-height:33px;text-indent:24px;}
-	.pro-dialog-cont{margin:0px 15px 0px 15px;border-top:1px solid #ff868b;padding:0px 10px 0px 10px;}
-	.pro-overflow{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}
-	.pro-title{cursor:pointer;;font-family:黑体;margin-top:20px;margin-bottom:15px;}
-	.pro-dialog-a{margin-top:9px;display: block;float:right;font-size:13px;}
-	.pro-dialog-cont:after{display: block;clear:both;content:"";visibility:hidden;height:0;}
+	*{margin:0px;padding:0px;}
+	body{height:1000px;}
+	html{height:100%;}
+	.title{background:orange;height:30px;cursor:move;}
+	.close{cursor:pointer;float:right;font-size:18px;background:pink;}
+	.mask{position:absolute;width:100%;height:inherit;background:rgba(0,0,0,0.3);top:0px;overflow:hidden;}
+	.cont{background:white;height:200px;width:400px;position:absolute;}
 </style>
-<style type="text/css">
-	.special-color{
-		color:#999999;
-		font-size:13px;
-	}
-	.cont {
-		bottom:10px;
-		right:10px;
-		position:fixed;
-		border:1px solid #d4d4d4;
-		height:195px;
-		width:256px;
-		border-radius:4px;
-	}
-</style>
-<script type="text/javascript" src="../js/jquery.js"></script>
 <script type="text/javascript">
-	// 组件模块 
-	;(function() {
-		// 主构造函数
-		function ProDialog(options) {
-			var opti = options,
-				template = "",
-				defa = ProDialog.DEFAULTS;
-			this.object =  opti.object || defa.object;
-			this.width = opti.width || defa.width;
-			this.title = opti.title || defa.title;
-			defa.cont = this.object.innerHTML;		
-			this.object.innerHTML = this.replace(defa.cont, this.title);
-			this.object.style.display = "block";
-			this._close();
-		}
-		ProDialog.DEFAULTS = {
-			width:100,
-			title:"标题",
-			cont:""
-		};
-		ProDialog.prototype.close = function() {
-			this.object.outerHTML = "";
-		};
-		ProDialog.prototype._close = function() {
-			function inClick() {
-							 this.outerHTML = "";
-							// alert();
-						}
-			var _this = this;
-			this.object.children[0].children[0].children[1].addEventListener("click", $.proxy(_this, inClick))};
-		ProDialog.prototype.replace = function(relpaceContent,value) {
-			var template = 	'<div class="pro-dialog">\
-							<div class="pro-dialog-head">\
-								<span class="pro-dialog-title">&nbsp;{{title}}</span>\
-								<div class="pro-dialog-close">\
-									<b></b>\
-								</div>\
-							</div>\
-							<div class="pro-dialog-cont">\
-							' + relpaceContent + '\
-							</div>\
-						</div>';
-			template = template.replace("{{title}}",value);
-			return template;
-		};
-		window.ProDialog = ProDialog;
-	})();
-	var myDialog1 = new ProDialog({
-		object:document.getElementsByClassName("cont")[0],
-		title:"IFinD最新路演"
+
+	// 原生选择器
+	function select(obj) {
+		return document.querySelector(obj)||"";
+	}
+
+	var m = (document.body.clientWidth/2 - select(".cont").offsetWidth/2);
+	var n = 200;
+	select(".cont").style.left = (document.body.clientWidth/2 - select(".cont").offsetWidth/2)+ "px";
+	select(".cont").style.top = "200px";
+
+	// 显示按钮
+	select("button").addEventListener("click", function() {
+		select(".mask").style.display = "block";
+		//$("html").css("overflow","hidden");
 	});
+
+	// 关闭按钮
+	select(".close").addEventListener("click", function() {
+		select(".mask").style.display = "none";
+		// $("html").css("overflow","auto");
+	});
+
+	// 初始化属性
+	var mouseOffsetX = 0;
+	var mouseOffsetY = 0;
+
+	// 可移动标志位
+	var isDraging = false;
+
+	// 按下
+	select(".title").addEventListener("mousedown", function(e) {
+		
+		// 计算当前位置
+		mouseOffsetX = e.pageX - select(".cont").offsetLeft;
+		mouseOffsetY = e.pageY - select(".cont").offsetTop;
+		isDraging = true;
+	});
+
+	// 移动
+	document.onmousemove = function(e) {
+
+		if (isDraging === true) {
+			// 计算当前位置
+			var x = e.pageX - mouseOffsetX;
+			var y = e.pageY - mouseOffsetY;
+
+			// 范围限定防止拖拽出浏览器边界
+			var clientWidth = document.body.clientWidth;
+			var clientHeight = document.body.clientHeight;
+			var contWidth = select(".cont").offsetWidth;
+			var contHeight = select(".cont").offsetHeight;
+			var maxX = clientWidth - contWidth;
+			var maxY = clientHeight -contHeight;
+			
+			x = Math.min(maxX, Math.max(0, x));
+			y = Math.min(maxY, Math.max(0, y));
+
+			select(".cont").style.left =  x + "px";
+			select(".cont").style.top =y + "px";
+		}
+	};
+
+	// 弹起
+	document.onmouseup = function() {
+		isDraging = false;
+	};
 </script>
 </html>
