@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>带预览的幻灯片</title>
+</head>
+<style type="text/css">
+	/*body{height:1000px;border:1px solid black;}*/
+	body{margin-top:50px;}
+	*{margin:0px;padding:0px;font-family:微软雅黑;color:gray;}
+	.slider{width:100%;height:400px;position:relative;}
+	.slider .main{overflow:hidden;height:400px;position:absolute;width:100%;}
+	.caption{z-index:10;position:absolute;top:100px;left:150px;width:400px;}
+	.ctrl{position:absolute;line-height:13px;text-align:center;width:100%;height:13px;background:white;}
+	.ctrl-i{display:inline-block;width:150px;height:13px;box-shadow:0 1px 1px rgba(0,0,0,0.3);background:#666;position:relative;}
+	.ctrl-i img{width:100%;position:absolute;left:0;bottom:50px;opacity:0;}
+	.ctrl-i:hover{background:#F0F0F0;}
+	.ctrl-i:hover img{bottom:13px;
+		opacity:1;
+		/*webkit的倒影*/
+		-webkit-box-reflect:below 0px -webkit-gradient(
+			linear,
+			left top,
+			left bottom,
+			from(transparent),
+			color-stop(50%, transparent),
+			to(rgba(255,255,255,.3))
+			);
+		-webkit-transition:all 0.2s;
+	}
+	.ctrl-i_active,.ctrl-i_active:hover{background:black;cursor:default;}
+	.ctrl-i_active:hover img{opacity:0;}
+	/*这里的top=50%需要父元素有高度，不然没用*/
+	.main-i img{width:100%;top:50%;position:absolute;}
+	.main-i{height:400px;width:100%;opacity:0;position:absolute;right:50%;top:0;-webkit-transition:all 0.5s;}
+
+	/*标题如果没有line-height貌似无法margin,注.caption宽度要足够*/
+	.main-i h2{margin-right:45px;font-size:40px;color:black;text-align:right;line-height:50px;opacity:0;}
+	.main-i h3{opacity:0;margin-right:-45px;font-size:70px;line-height:70px;text-align:right;}
+	.main-i_active h2,.main-i_active h3{opacity:1;margin-right:0;transition:all 0.4s 0.4s;}
+	/*注意这里transition两个地方都要有   .main-i_active 跟 .main-i*/
+	.main-i_active{opacity:1;right:0;-webkit-transition:all 0.4s;opacity:1;}
+</style>
+<body>
+	<div class="slider">
+		
+		<div class="main" id="template_main">
+			<div class="main-i main-i_active picture" id="main_0">
+				<div class="caption">
+					<h2>CAPTION</h2>
+					<h3>CAPTION</h3>
+				</div>
+				<img src="images/1.jpg">
+			</div>
+			<div class="main-i picture" id="main_1">
+				<div class="caption">
+					<h2>CAPTION</h2>
+					<h3>CAPTION</h3>
+				</div>
+				<img src="images/2.jpg">
+			</div>
+			<div class="main-i picture" id="main_2">
+				<div class="caption">
+					<h2>CAPTION</h2>
+					<h3>CAPTION</h3>
+				</div>
+				<img src="images/3.jpg">
+			</div>
+			<div class="main-i picture" id="main_3">
+				<div class="caption">
+					<h2>CAPTION</h2>
+					<h3>CAPTION</h3>
+				</div>
+				<img src="images/4.jpg">
+			</div>
+			<div class="main-i picture" id="main_4">
+				<div class="caption">
+					<h2>CAPTION</h2>
+					<h3>CAPTION</h3>
+				</div>
+				<img src="images/5.jpg">
+			</div>
+			<div class="main-i picture" id="main_5">
+				<div class="caption">
+					<h2>CAPTION</h2>
+					<h3>CAPTION</h3>
+				</div>
+				<img src="images/6.jpg">
+			</div>
+			<div class="main-i picture" id="main_6">
+				<div class="caption">
+					<h2>CAPTION</h2>
+					<h3>CAPTION</h3>
+				</div>
+				<img src="images/7.jpg">
+			</div>
+		</div>
+	</div>
+	<div class="ctrl">
+		<a href="javascript:switchSlider(0);" class="ctrl-i ctrl-i_active" id="ctrl_0">
+			<img src="images/1.jpg">
+		</a>
+		<a href="javascript:switchSlider(1);" class="ctrl-i" id="ctrl_1">
+			<img src="images/2.jpg">
+		</a>
+		<a href="javascript:switchSlider(2);" class="ctrl-i" id="ctrl_2">
+			<img src="images/3.jpg">
+		</a>
+		<a href="javascript:switchSlider(3);" class="ctrl-i" id="ctrl_3">
+			<img src="images/4.jpg">
+		</a>
+		<a href="javascript:switchSlider(4);" class="ctrl-i" id="ctrl_4">
+			<img src="images/5.jpg">
+		</a>
+		<a href="javascript:switchSlider(5);" class="ctrl-i" id="ctrl_5">
+			<img src="images/6.jpg">
+		</a>
+		<a href="javascript:switchSlider(6);" class="ctrl-i" id="ctrl_6">
+			<img src="images/7.jpg">
+		</a>
+		
+	</div>
+</body>
+<script type="text/javascript" src="js/zepto.js"></script>
+<script type="text/javascript">
+
+	// 数据定义，后台给出
+	var data = [
+		{img: 1, h1: "Creative1", h2: "DUET"},
+		{img: 2, h1: "Friendly", h2:"DEVIL"},
+		{img: 3, h1:"Tranquilent", h2: "tttt"},
+		{img: 4, h1:"asdfasd", h2:"aaa"},
+		{img: 5, h1: "gfgg", h2:"ccc"},
+		{img: 6, h1: "sdfgh", h2:"ddd"},
+		{img: 7, h1: "hhh", h2:"ggg"}
+	];
+	function g(obj) {
+		var x = obj.substring(0,1);
+		var state = (x == "#" ? true : false);
+		if (state) {
+			return document.querySelector(obj);
+		} else {
+		 	return document.querySelectorAll(obj);
+		}
+	}file:///C:/Users/Administrator/Desktop/%E5%B8%A6%E9%A2%84%E8%A7%88%E7%9A%84%E5%B9%BB%E7%81%AF%E7%89%87/images/1.jpg
+
+	// 动态调整图片的margin-top使其垂直居中
+	function movePictures() {
+		var pictures = g(".picture img");
+		//console.log(pictures[0]);
+		console.log(pictures);
+		for (var i = 0; i < pictures.length; i++) {
+
+			// 不含边线
+			pictures[i].style.marginTop = -1 * (pictures[0].offsetHeight/2) + "px";
+		}
+		
+	}
+
+	window.onload = function() {
+		movePictures();
+		setTimeout(selfClick,2000);
+	};
+	window.onresize = function() {
+		movePictures();
+	}
+
+	// 自点击定时器
+	function selfClick() {
+		var length = $(".ctrl-i").length;
+		var proNumber = $(".ctrl-i_active").attr("id").match(/\d+/g)[0];
+		if (proNumber >= (length-1)) {
+			proNumber = 0;
+		} else {
+			proNumber ++
+		}
+		$(".ctrl-i").eq(proNumber).trigger("click");
+		setTimeout(arguments.callee,2000);
+
+	}
+
+	function switchSlider(index) {
+		console.log(g("#ctrl_" + index));
+		console.log(g("#main_" + index));
+
+
+		//获得所有的幻灯片以及按钮
+		var clear_main = g(".main-i");
+		var clear_ctrl = g(".ctrl-i");
+
+		for (var i = 0; i < clear_main.length; i++) {
+			clear_main[i].className = clear_main[i].className.replace("main-i_active","");
+		}
+		for(var i = 0; i < clear_ctrl.length; i++) {
+			clear_ctrl[i].className = clear_ctrl[i].className.replace("ctrl-i_active","");
+		}
+		g("#main_" + index).className += " main-i_active";
+		g("#ctrl_" + index).className += " ctrl-i_active";
+
+		// 输出的是 [object NodeList]
+		//console.log(Object.prototype.toString.call(clear_main));
+
+	}
+</script>
+</html>
